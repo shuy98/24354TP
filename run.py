@@ -1,3 +1,9 @@
+#################################
+# Kinect body detection
+# from https://github.com/Kinect/PyKinect2
+# adapted and modified by Shu You
+#################################
+
 from pykinect2 import PyKinectV2
 from pykinect2.PyKinectV2 import *
 from pykinect2 import PyKinectRuntime
