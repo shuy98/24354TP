@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-
 int ledPin = 2;
 
 void setup() {
