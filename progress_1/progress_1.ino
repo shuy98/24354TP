@@ -7,18 +7,14 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
+  if (Serial.available() > 0) { // signal deteced from Serial port
     char incomingByte = Serial.read();
-    //String turnOnLed = "turn on led";
-    //String turnOffLed = "turn off led";
-    //Serial.println(incomingString);
 
     if (incomingByte == 'o') {
-      digitalWrite(ledPin, HIGH);     
-      //delay(1000); 
+      digitalWrite(ledPin, HIGH); 
     } else if (incomingByte == 'c'){
       digitalWrite(ledPin, LOW);      
-    } else {
+    } else { // unrecognized signal from Serial port
       for (int i=0; i<3; i++) {
         digitalWrite(ledPin, LOW);
         delay(500);
