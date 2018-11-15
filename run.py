@@ -189,11 +189,8 @@ class BodyGameRuntime(object):
                 elif event.type == pygame.VIDEORESIZE: # window resized
                     self._screen = pygame.display.set_mode(event.dict['size'], 
                                                pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE, 32)
-                    
-            # --- Game logic should go here
 
             # --- Getting frames and drawing  
-            # --- Woohoo! We've got a color frame! Let's fill out back buffer surface with frame's data 
             if self._kinect.has_new_color_frame():
                 frame = self._kinect.get_last_color_frame()
                 self.draw_color_frame(frame, self._frame_surface)
@@ -210,22 +207,15 @@ class BodyGameRuntime(object):
                     if not body.is_tracked: 
                         continue 
                     if body.is_tracked:
-                        
-                        # if not self.is_calibrated:
-                        #     print("waiting for calibration...")
-                        #     time.sleep(3)
-                        #     print("go")
-                        #     self.is_calibrated = True
-                        
-
                         joints = body.joints 
-
                         
                         # left hand x and y position
                         if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
                             self.cur_left_hand_height = joints[PyKinectV2.JointType_HandLeft].Position.y
+
                         if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
                             self.cur_left_hand_width = joints[PyKinectV2.JointType_HandLeft].Position.x
+
                         self.position_left_hand = (self.cur_left_hand_width, self.cur_left_hand_height)
 
                         # left shoulder x and y position
@@ -242,29 +232,15 @@ class BodyGameRuntime(object):
                             self.cur_left_elbow_width = joints[PyKinectV2.JointType_ElbowLeft].Position.x
                         self.position_left_elbow = (self.cur_left_elbow_width, self.cur_left_elbow_height)
 
-                        self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, 
-                                                         self.position_left_shoulder)
+                        self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
 
                         
                         if (self.left_arm_angle <= 90):
-                            #print("left_arm_angle is less than 90 degrees")
                             msg = 'o'
                             uno.write(msg.encode())
-                            #uno.write(b'turn on led')                            
-                            #print(msg.encode())
-                            #line = uno.readline()
-                            #print(line)
                         else:
-                            #print("left_arm_angle is not less than 90 degrees")
                             msg = 'c'
                             uno.write(msg.encode())
-                            #uno.write(b'turn off led')
-                            #print(msg.encode())
-                            #line = uno.readline()
-                            #print(line)
-
-                        #self.prev_left_hand_height = self.cur_left_hand_height
-
 
 
                     # convert joint coordinates to color space 
