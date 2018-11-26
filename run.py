@@ -83,13 +83,13 @@ class BodyGameRuntime(object):
         self.cur_left_elbow_width = 0
         self.position_left_elbow = (0, 0)
 
-        self.left_arm_angle = 0
-        self.is_calibrated = False
+        #self.left_arm_angle = 0
+        #self.is_calibrated = False
 
 
     def draw_body_bone(self, joints, jointPoints, color, joint0, joint1):
-        joint0State = joints[joint0].TrackingState;
-        joint1State = joints[joint1].TrackingState;
+        joint0State = joints[joint0].TrackingState
+        joint1State = joints[joint1].TrackingState
 
         # both joints are not tracked
         if (joint0State == PyKinectV2.TrackingState_NotTracked) or (joint1State == PyKinectV2.TrackingState_NotTracked): 
@@ -110,38 +110,38 @@ class BodyGameRuntime(object):
 
     def draw_body(self, joints, jointPoints, color):
         # Torso
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_Head, PyKinectV2.JointType_Neck);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_Neck, PyKinectV2.JointType_SpineShoulder);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_SpineMid);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineMid, PyKinectV2.JointType_SpineBase);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_ShoulderRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_ShoulderLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineBase, PyKinectV2.JointType_HipRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineBase, PyKinectV2.JointType_HipLeft);
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_Head, PyKinectV2.JointType_Neck)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_Neck, PyKinectV2.JointType_SpineShoulder)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_SpineMid)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineMid, PyKinectV2.JointType_SpineBase)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_ShoulderRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineShoulder, PyKinectV2.JointType_ShoulderLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineBase, PyKinectV2.JointType_HipRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_SpineBase, PyKinectV2.JointType_HipLeft)
     
         # Right Arm    
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ShoulderRight, PyKinectV2.JointType_ElbowRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ElbowRight, PyKinectV2.JointType_WristRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristRight, PyKinectV2.JointType_HandRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HandRight, PyKinectV2.JointType_HandTipRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristRight, PyKinectV2.JointType_ThumbRight);
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ShoulderRight, PyKinectV2.JointType_ElbowRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ElbowRight, PyKinectV2.JointType_WristRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristRight, PyKinectV2.JointType_HandRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HandRight, PyKinectV2.JointType_HandTipRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristRight, PyKinectV2.JointType_ThumbRight)
 
         # Left Arm
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ShoulderLeft, PyKinectV2.JointType_ElbowLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ElbowLeft, PyKinectV2.JointType_WristLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristLeft, PyKinectV2.JointType_HandLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HandLeft, PyKinectV2.JointType_HandTipLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristLeft, PyKinectV2.JointType_ThumbLeft);
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ShoulderLeft, PyKinectV2.JointType_ElbowLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_ElbowLeft, PyKinectV2.JointType_WristLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristLeft, PyKinectV2.JointType_HandLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HandLeft, PyKinectV2.JointType_HandTipLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_WristLeft, PyKinectV2.JointType_ThumbLeft)
 
         # Right Leg
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HipRight, PyKinectV2.JointType_KneeRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_KneeRight, PyKinectV2.JointType_AnkleRight);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_AnkleRight, PyKinectV2.JointType_FootRight);
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HipRight, PyKinectV2.JointType_KneeRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_KneeRight, PyKinectV2.JointType_AnkleRight)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_AnkleRight, PyKinectV2.JointType_FootRight)
 
         # Left Leg
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HipLeft, PyKinectV2.JointType_KneeLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_KneeLeft, PyKinectV2.JointType_AnkleLeft);
-        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_AnkleLeft, PyKinectV2.JointType_FootLeft);
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_HipLeft, PyKinectV2.JointType_KneeLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_KneeLeft, PyKinectV2.JointType_AnkleLeft)
+        self.draw_body_bone(joints, jointPoints, color, PyKinectV2.JointType_AnkleLeft, PyKinectV2.JointType_FootLeft)
 
 
     def draw_color_frame(self, frame, target_surface):
@@ -177,6 +177,14 @@ class BodyGameRuntime(object):
                      self.calc_distance(point_middle, point_1)))
         return math.acos(cos_angle) / math.pi * 180
 
+    # find x y position of a joint
+    def joint_x_y_pos(self, joints, JointType):
+        if joints[JointType].TrackingState != PyKinectV2.TrackingState_NotTracked:
+            joint_height = joints[JointType].Position.y
+            joint_width = joints[JointType].Position.x
+            return (joint_width, joint_height)
+        else:
+            return False
 
     def run(self):
         # -------- Main Program Loop -----------
@@ -210,29 +218,41 @@ class BodyGameRuntime(object):
                         joints = body.joints 
                         
                         # left hand x and y position
-                        if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_hand_height = joints[PyKinectV2.JointType_HandLeft].Position.y
+                        # if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_hand_height = joints[PyKinectV2.JointType_HandLeft].Position.y
 
-                        if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_hand_width = joints[PyKinectV2.JointType_HandLeft].Position.x
+                        # if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_hand_width = joints[PyKinectV2.JointType_HandLeft].Position.x
 
-                        self.position_left_hand = (self.cur_left_hand_width, self.cur_left_hand_height)
+                        # self.position_left_hand = (self.cur_left_hand_width, self.cur_left_hand_height)
+
+                        self.position_left_hand = self.joint_x_y_pos(joints, PyKinectV2.JointType_HandLeft)
 
                         # left shoulder x and y position
-                        if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_shoulder_height = joints[PyKinectV2.JointType_ShoulderLeft].Position.y
-                        if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_shoulder_width = joints[PyKinectV2.JointType_ShoulderLeft].Position.x
-                        self.position_left_shoulder = (self.cur_left_shoulder_width, self.cur_left_shoulder_height)
+                        # if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_shoulder_height = joints[PyKinectV2.JointType_ShoulderLeft].Position.y
+                        # if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_shoulder_width = joints[PyKinectV2.JointType_ShoulderLeft].Position.x
+                        # self.position_left_shoulder = (self.cur_left_shoulder_width, self.cur_left_shoulder_height)
+
+                        self.position_left_shoulder = self.joint_x_y_pos(joints, PyKinectV2.JointType_ShoulderLeft)
 
                         # left elbow x and y position
-                        if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_elbow_height = joints[PyKinectV2.JointType_ElbowLeft].Position.y
-                        if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            self.cur_left_elbow_width = joints[PyKinectV2.JointType_ElbowLeft].Position.x
-                        self.position_left_elbow = (self.cur_left_elbow_width, self.cur_left_elbow_height)
+                        # if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_elbow_height = joints[PyKinectV2.JointType_ElbowLeft].Position.y
+                        # if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        #     self.cur_left_elbow_width = joints[PyKinectV2.JointType_ElbowLeft].Position.x
+                        # self.position_left_elbow = (self.cur_left_elbow_width, self.cur_left_elbow_height)
 
-                        self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
+                        self.position_left_elbow = self.joint_x_y_pos(joints, PyKinectV2.JointType_ElbowLeft)
+
+                        if (self.position_left_hand == False or 
+                            self.position_left_elbow == False or
+                            self.position_left_shoulder == False):
+                            self.left_arm_angle = 180
+                        else:
+                            self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
+
 
                         
                         if (self.left_arm_angle <= 90):
@@ -251,7 +271,7 @@ class BodyGameRuntime(object):
             # --- (screen size may be different from Kinect's color frame size) 
             h_to_w = float(self._frame_surface.get_height()) / self._frame_surface.get_width()
             target_height = int(h_to_w * self._screen.get_width())
-            surface_to_draw = pygame.transform.scale(self._frame_surface, (self._screen.get_width(), target_height));
+            surface_to_draw = pygame.transform.scale(self._frame_surface, (self._screen.get_width(), target_height))
             self._screen.blit(surface_to_draw, (0,0))
             surface_to_draw = None
             pygame.display.update()
@@ -268,6 +288,6 @@ class BodyGameRuntime(object):
 
 
 __main__ = "Kinect v2 Body Game"
-game = BodyGameRuntime();
-game.run();
+game = BodyGameRuntime()
+game.run()
 
