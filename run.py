@@ -256,7 +256,7 @@ class BodyGameRuntime(object):
 
                         
                         if (self.left_arm_angle <= 90):
-                            msg = 'o'
+                            msg = 'f'
                             uno.write(msg.encode())
                         else:
                             msg = 'c'

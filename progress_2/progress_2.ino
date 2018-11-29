@@ -7,9 +7,15 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61); 
 
 // Select which 'port' M1, M2, M3 or M4. In this case, M4
-Adafruit_DCMotor *myMotor = AFMS.getMotor(4);
-// You can also make another motor on port M2
-//Adafruit_DCMotor *myOtherMotor = AFMS.getMotor(2);
+Adafruit_DCMotor *backMotor = AFMS.getMotor(4); // back
+// You can also make another motor on port M3
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(3); // left
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(1); // right
+
+Adafruit_DCMotor *gripper = AFMS.getMotor(2); // gripper
+
+int forSpeed = 255;
+int backSpeed = 255;
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -19,30 +25,71 @@ void setup() {
   //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
   
   // Set the speed to start, from 0 (off) to 255 (max speed)
-  myMotor->setSpeed(127);
-  myMotor->run(FORWARD);
+  backMotor->setSpeed(255);
+  leftMotor->setSpeed(255);
+  rightMotor->setSpeed(255);
+  backMotor->run(FORWARD);
   // turn on motor
-  myMotor->run(RELEASE);
+  backMotor->run(RELEASE);
+  leftMotor->run(FORWARD);
+  // turn on motor
+  leftMotor->run(RELEASE);
+  rightMotor->run(FORWARD);
+  // turn on motor
+  rightMotor->run(RELEASE);
+
+  
 }
 
 void loop() {
+  //backMotor->run(FORWARD);
+  //backMotor->run(BACKWARD);
   if (Serial.available() > 0) { // signal detected from serial port
     char incomingByte = Serial.read();
 
-    if (incomingByte == 'o') {
-      Serial.println("open signal received");
-      myMotor->run(FORWARD);
+    if (incomingByte == 'f') {
+      Serial.println("forward signal received");
+      
+      backMotor->setSpeed(forSpeed);
+      backMotor->run(FORWARD);
+      
+      leftMotor->setSpeed(forSpeed);
+      leftMotor->run(FORWARD);
+      
+      rightMotor->setSpeed(forSpeed);
+      rightMotor->run(FORWARD);
+
+//      rightMotor->setSpeed(forSpeed);
+//      rightMotor->run(BACKWARD);
+
+//      gripper->setSpeed(forSpeed);
+//      gripper->run(BACKWARD);
+      
     } else if (incomingByte == 'c'){
       Serial.println("close signal received");
-      //myMotor->run(BACKWARD);
-      myMotor->run(RELEASE);      
+      backMotor->run(RELEASE);
+      leftMotor->run(RELEASE);
+      rightMotor->run(RELEASE);
+      gripper->run(RELEASE);
     } else if (incomingByte == 'b'){
       Serial.println("backward signal received");
-      myMotor->run(BACKWARD);
-      //myMotor->run(RELEASE);  
+      backMotor->setSpeed(backSpeed);
+      backMotor->run(BACKWARD);
+      leftMotor->setSpeed(backSpeed);
+      leftMotor->run(BACKWARD);
+      rightMotor->setSpeed(backSpeed);
+      rightMotor->run(BACKWARD);
+
+//      rightMotor->setSpeed(backSpeed);
+//      rightMotor->run(FORWARD);
+
+//      gripper->setSpeed(forSpeed);
+//      gripper->run(FORWARD);
+      
     } else { // unrecognized signal from Serial port
       Serial.println("unknown signal received");
-      myMotor->run(RELEASE); 
+      //myMotor->run(RELEASE);
+      //myMotor->run(RELEASE);  
     }
   }
 }
