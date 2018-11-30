@@ -31,7 +31,7 @@ SKELETON_COLORS = [pygame.color.THECOLORS["red"],
                   pygame.color.THECOLORS["yellow"], 
                   pygame.color.THECOLORS["violet"]]
 
-uno = serial.Serial('COM10', 9600) # enter serial port number here
+#uno = serial.Serial('COM10', 9600) # enter serial port number here
 
 class BodyGameRuntime(object):
     def __init__(self):
@@ -186,6 +186,17 @@ class BodyGameRuntime(object):
         else:
             return False
 
+    def eval_gesture_angle(self, joints, joint_pos_1, joint_pos_2, joint_pos_3):
+        pos_1 = self.joint_x_y_pos(joints, joint_pos_1)
+        pos_2 = self.joint_x_y_pos(joints, joint_pos_2)
+        pos_3 = self.joint_x_y_pos(joints, joint_pos_3)
+        angle = 180
+        if (pos_1 == False or pos_2 == False or pos_3 == False):
+            angle = 180
+        else:
+            angle = self.calc_angle(pos_1, pos_2, pos_3)
+        return angle
+
     def run(self):
         # -------- Main Program Loop -----------
         while not self._done:
@@ -216,51 +227,33 @@ class BodyGameRuntime(object):
                         continue 
                     if body.is_tracked:
                         joints = body.joints 
-                        
-                        # left hand x and y position
-                        # if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_hand_height = joints[PyKinectV2.JointType_HandLeft].Position.y
-
-                        # if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_hand_width = joints[PyKinectV2.JointType_HandLeft].Position.x
-
-                        # self.position_left_hand = (self.cur_left_hand_width, self.cur_left_hand_height)
-
-                        self.position_left_hand = self.joint_x_y_pos(joints, PyKinectV2.JointType_HandLeft)
-
-                        # left shoulder x and y position
-                        # if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_shoulder_height = joints[PyKinectV2.JointType_ShoulderLeft].Position.y
-                        # if joints[PyKinectV2.JointType_ShoulderLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_shoulder_width = joints[PyKinectV2.JointType_ShoulderLeft].Position.x
-                        # self.position_left_shoulder = (self.cur_left_shoulder_width, self.cur_left_shoulder_height)
-
-                        self.position_left_shoulder = self.joint_x_y_pos(joints, PyKinectV2.JointType_ShoulderLeft)
-
-                        # left elbow x and y position
-                        # if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_elbow_height = joints[PyKinectV2.JointType_ElbowLeft].Position.y
-                        # if joints[PyKinectV2.JointType_ElbowLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                        #     self.cur_left_elbow_width = joints[PyKinectV2.JointType_ElbowLeft].Position.x
-                        # self.position_left_elbow = (self.cur_left_elbow_width, self.cur_left_elbow_height)
-
-                        self.position_left_elbow = self.joint_x_y_pos(joints, PyKinectV2.JointType_ElbowLeft)
-
-                        if (self.position_left_hand == False or 
-                            self.position_left_elbow == False or
-                            self.position_left_shoulder == False):
-                            self.left_arm_angle = 180
-                        else:
-                            self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
 
 
-                        
+                        # self.position_left_hand = self.joint_x_y_pos(joints, PyKinectV2.JointType_HandLeft)
+
+                        # self.position_left_shoulder = self.joint_x_y_pos(joints, PyKinectV2.JointType_ShoulderLeft)
+
+                        # self.position_left_elbow = self.joint_x_y_pos(joints, PyKinectV2.JointType_ElbowLeft)
+
+                        # if (self.position_left_hand == False or 
+                        #     self.position_left_elbow == False or
+                        #     self.position_left_shoulder == False):
+                        #     self.left_arm_angle = 180
+                        # else:
+                        #     self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
+
+                        self.left_arm_angle = self.eval_gesture_angle(joints, 
+                            PyKinectV2.JointType_HandLeft, PyKinectV2.JointType_ElbowLeft,
+                            PyKinectV2.JointType_ShoulderLeft)
+
                         if (self.left_arm_angle <= 90):
                             msg = 'f'
-                            uno.write(msg.encode())
+                            #uno.write(msg.encode())
+                            print("less than 90")
                         else:
                             msg = 'c'
-                            uno.write(msg.encode())
+                            print("greater than 90")
+                            #uno.write(msg.encode())
 
 
                     # convert joint coordinates to color space 

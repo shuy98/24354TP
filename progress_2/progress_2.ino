@@ -11,7 +11,6 @@ Adafruit_DCMotor *backMotor = AFMS.getMotor(4); // back
 // You can also make another motor on port M3
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(3); // left
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(1); // right
-
 Adafruit_DCMotor *gripper = AFMS.getMotor(2); // gripper
 
 int forSpeed = 255;
@@ -28,22 +27,21 @@ void setup() {
   backMotor->setSpeed(255);
   leftMotor->setSpeed(255);
   rightMotor->setSpeed(255);
+
   backMotor->run(FORWARD);
   // turn on motor
   backMotor->run(RELEASE);
+
   leftMotor->run(FORWARD);
   // turn on motor
   leftMotor->run(RELEASE);
+
   rightMotor->run(FORWARD);
   // turn on motor
-  rightMotor->run(RELEASE);
-
-  
+  rightMotor->run(RELEASE);  
 }
 
 void loop() {
-  //backMotor->run(FORWARD);
-  //backMotor->run(BACKWARD);
   if (Serial.available() > 0) { // signal detected from serial port
     char incomingByte = Serial.read();
 
