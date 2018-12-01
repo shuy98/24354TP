@@ -24,29 +24,29 @@ void setup() {
   //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
   
   // Set the speed to start, from 0 (off) to 255 (max speed)
-  backMotor->setSpeed(255);
-  leftMotor->setSpeed(255);
-  rightMotor->setSpeed(255);
+  // backMotor->setSpeed(255);
+  // leftMotor->setSpeed(255);
+  // rightMotor->setSpeed(255);
 
-  backMotor->run(FORWARD);
-  // turn on motor
-  backMotor->run(RELEASE);
+  // backMotor->run(FORWARD);
+  // // turn on motor
+  // backMotor->run(RELEASE);
 
-  leftMotor->run(FORWARD);
-  // turn on motor
-  leftMotor->run(RELEASE);
+  // leftMotor->run(FORWARD);
+  // // turn on motor
+  // leftMotor->run(RELEASE);
 
-  rightMotor->run(FORWARD);
-  // turn on motor
-  rightMotor->run(RELEASE);  
+  // rightMotor->run(FORWARD);
+  // // turn on motor
+  // rightMotor->run(RELEASE);  
 }
 
 void loop() {
   if (Serial.available() > 0) { // signal detected from serial port
     char incomingByte = Serial.read();
 
-    if (incomingByte == 'f') {
-      Serial.println("forward signal received");
+    if (incomingByte == 'l') {
+      // Serial.println("forward signal received");
       
       backMotor->setSpeed(forSpeed);
       backMotor->run(FORWARD);
@@ -57,37 +57,36 @@ void loop() {
       rightMotor->setSpeed(forSpeed);
       rightMotor->run(FORWARD);
 
-//      rightMotor->setSpeed(forSpeed);
-//      rightMotor->run(BACKWARD);
-
-//      gripper->setSpeed(forSpeed);
-//      gripper->run(BACKWARD);
-      
-    } else if (incomingByte == 'c'){
-      Serial.println("close signal received");
+    } else if (incomingByte == 'c') {
+      //Serial.println("close signal received");
       backMotor->run(RELEASE);
       leftMotor->run(RELEASE);
       rightMotor->run(RELEASE);
-      gripper->run(RELEASE);
-    } else if (incomingByte == 'b'){
-      Serial.println("backward signal received");
+      //gripper->run(RELEASE);
+
+    } else if (incomingByte == 'r') {
+      //Serial.println("backward signal received");
       backMotor->setSpeed(backSpeed);
       backMotor->run(BACKWARD);
       leftMotor->setSpeed(backSpeed);
       leftMotor->run(BACKWARD);
       rightMotor->setSpeed(backSpeed);
       rightMotor->run(BACKWARD);
-
-//      rightMotor->setSpeed(backSpeed);
-//      rightMotor->run(FORWARD);
-
-//      gripper->setSpeed(forSpeed);
-//      gripper->run(FORWARD);
       
+    } else if (incomingByte == 'w') {
+      leftMotor->setSpeed(backSpeed);
+      leftMotor->run(BACKWARD);
+      rightMotor->setSpeed(forSpeed);
+      rightMotor->run(FORWARD);
+
+    } else if (incomingByte == 's') {
+      rightMotor->setSpeed(backSpeed);
+      rightMotor->run(BACKWARD);
+      leftMotor->setSpeed(forSpeed);
+      leftMotor->run(FORWARD);
+
     } else { // unrecognized signal from Serial port
       Serial.println("unknown signal received");
-      //myMotor->run(RELEASE);
-      //myMotor->run(RELEASE);  
     }
   }
 }

@@ -228,32 +228,45 @@ class BodyGameRuntime(object):
                     if body.is_tracked:
                         joints = body.joints 
 
-
-                        # self.position_left_hand = self.joint_x_y_pos(joints, PyKinectV2.JointType_HandLeft)
-
-                        # self.position_left_shoulder = self.joint_x_y_pos(joints, PyKinectV2.JointType_ShoulderLeft)
-
-                        # self.position_left_elbow = self.joint_x_y_pos(joints, PyKinectV2.JointType_ElbowLeft)
-
-                        # if (self.position_left_hand == False or 
-                        #     self.position_left_elbow == False or
-                        #     self.position_left_shoulder == False):
-                        #     self.left_arm_angle = 180
-                        # else:
-                        #     self.left_arm_angle = self.calc_angle(self.position_left_hand, self.position_left_elbow, self.position_left_shoulder)
-
                         self.left_arm_angle = self.eval_gesture_angle(joints, 
-                            PyKinectV2.JointType_HandLeft, PyKinectV2.JointType_ElbowLeft,
+                            PyKinectV2.JointType_HandLeft, 
+                            PyKinectV2.JointType_ElbowLeft,
                             PyKinectV2.JointType_ShoulderLeft)
 
-                        if (self.left_arm_angle <= 90):
-                            msg = 'f'
-                            #uno.write(msg.encode())
-                            print("less than 90")
+                        self.right_arm_angle = self.eval_gesture_angle(joints, 
+                            PyKinectV2.JointType_HandRight, 
+                            PyKinectV2.JointType_ElbowRight,
+                            PyKinectV2.JointType_ShoulderRight)
+
+                        if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                            joint_depth = joints[PyKinectV2.JointType_HandLeft].Position.z
+
+                            joint_depth_2 = joints[PyKinectV2.JointType_ShoulderLeft].Position.z
+
+                            if (joint_depth - joint_depth_2 > 0.2):
+                                # move backward
+                                msg = 's'
+                                uno.write(msg.encode())
+                            elif (joint_depth - joint_depth_2 < -0.45):
+                                # move forward
+                                msg = 'w'
+                                uno.write(msg.encode())
+                            else:
+                                # do nothing
+
+                        if (self.left_arm_angle <= 90 and self.right_arm_angle > 90):
+                            msg = 'l'
+                            uno.write(msg.encode())
+                            #print("turn left")
+                        elif (self.right_arm_angle <= 90 and self.left_arm_angle > 90):
+                            msg = 'r'
+                            uno.write(msg.encode())
+                            #print("turn right")
+
                         else:
                             msg = 'c'
-                            print("greater than 90")
-                            #uno.write(msg.encode())
+                            #print("close")
+                            uno.write(msg.encode())
 
 
                     # convert joint coordinates to color space 
