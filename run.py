@@ -31,7 +31,7 @@ SKELETON_COLORS = [pygame.color.THECOLORS["red"],
                   pygame.color.THECOLORS["yellow"], 
                   pygame.color.THECOLORS["violet"]]
 
-#uno = serial.Serial('COM10', 9600) # enter serial port number here
+uno = serial.Serial('COM10', 9600) # enter serial port number here
 
 class BodyGameRuntime(object):
     def __init__(self):
@@ -196,6 +196,15 @@ class BodyGameRuntime(object):
         else:
             angle = self.calc_angle(pos_1, pos_2, pos_3)
         return angle
+    
+    def is_hand_closed(self, left_hand_pos, right_hand_pos):
+        self.x_diff_hand = self.left_hand_pos[0] - self.right_hand_pos[0]
+        self.y_diff_hand = self.left_hand_pos[1] - self.right_hand_pos[1]
+        self.pos_diff_hand = ((self.x_diff_hand)**2 + (self.y_diff_hand)**2)**0.5
+        if (self.pos_diff_hand < 0.1):
+            return True
+        else:
+            return False
 
     def run(self):
         # -------- Main Program Loop -----------
@@ -238,36 +247,50 @@ class BodyGameRuntime(object):
                             PyKinectV2.JointType_ElbowRight,
                             PyKinectV2.JointType_ShoulderRight)
 
-                        if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
-                            joint_depth = joints[PyKinectV2.JointType_HandLeft].Position.z
+                        self.left_hand_pos = self.joint_x_y_pos(joints, 
+                                                PyKinectV2.JointType_HandLeft)
 
-                            joint_depth_2 = joints[PyKinectV2.JointType_ShoulderLeft].Position.z
+                        self.right_hand_pos = self.joint_x_y_pos(joints, 
+                                                PyKinectV2.JointType_HandRight)
 
-                            if (joint_depth - joint_depth_2 > 0.2):
-                                # move backward
-                                msg = 's'
-                                uno.write(msg.encode())
-                            elif (joint_depth - joint_depth_2 < -0.45):
-                                # move forward
-                                msg = 'w'
-                                uno.write(msg.encode())
-                            else:
-                                # do nothing
+                        # if joints[PyKinectV2.JointType_HandLeft].TrackingState != PyKinectV2.TrackingState_NotTracked:
+                        joint_depth = joints[PyKinectV2.JointType_HandLeft].Position.z
 
-                        if (self.left_arm_angle <= 90 and self.right_arm_angle > 90):
+                        joint_depth_2 = joints[PyKinectV2.JointType_ShoulderLeft].Position.z
+
+                        if (joint_depth - joint_depth_2 > 0.2):
+                            # move backward
+                            msg = 's'
+                            uno.write(msg.encode())
+                            
+                        elif (joint_depth - joint_depth_2 < -0.45):
+                            # move forward
+                            msg = 'w'
+                            uno.write(msg.encode())
+
+                        elif (self.left_arm_angle <= 90 and self.right_arm_angle > 90):
                             msg = 'l'
                             uno.write(msg.encode())
-                            #print("turn left")
+                            
                         elif (self.right_arm_angle <= 90 and self.left_arm_angle > 90):
                             msg = 'r'
                             uno.write(msg.encode())
-                            #print("turn right")
 
-                        else:
-                            msg = 'c'
-                            #print("close")
+                        elif (self.is_hand_closed(self.left_hand_pos, self.right_hand_pos)
+                              and joints[PyKinectV2.JointType_HandLeft].Position.x <
+                        joints[PyKinectV2.JointType_Head].Position.x):
+                            msg = 'o'
                             uno.write(msg.encode())
 
+                        elif (self.is_hand_closed(self.left_hand_pos, self.right_hand_pos)
+                              and joints[PyKinectV2.JointType_HandLeft].Position.x >=
+                        joints[PyKinectV2.JointType_Head].Position.x):
+                            msg = 'c'
+                            uno.write(msg.encode())
+
+                        else:
+                            msg = 't'
+                            uno.write(msg.encode())
 
                     # convert joint coordinates to color space 
                     joint_points = self._kinect.body_joints_to_color_space(joints)

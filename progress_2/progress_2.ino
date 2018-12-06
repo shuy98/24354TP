@@ -13,80 +13,105 @@ Adafruit_DCMotor *leftMotor = AFMS.getMotor(3); // left
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(1); // right
 Adafruit_DCMotor *gripper = AFMS.getMotor(2); // gripper
 
+/* global variables */
 int forSpeed = 255;
 int backSpeed = 255;
+
+/* function prototypes */
+void turnCCW();
+void terminate();
+void turnCW();
+void moveForward();
+void moveBackward();
+void closeGripper();
+void openGripper();
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
   Serial.println("Adafruit Motorshield v2 - DC Motor test!");
 
   AFMS.begin();  // create with the default frequency 1.6KHz
-  //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
-  
-  // Set the speed to start, from 0 (off) to 255 (max speed)
-  // backMotor->setSpeed(255);
-  // leftMotor->setSpeed(255);
-  // rightMotor->setSpeed(255);
-
-  // backMotor->run(FORWARD);
-  // // turn on motor
-  // backMotor->run(RELEASE);
-
-  // leftMotor->run(FORWARD);
-  // // turn on motor
-  // leftMotor->run(RELEASE);
-
-  // rightMotor->run(FORWARD);
-  // // turn on motor
-  // rightMotor->run(RELEASE);  
+  //AFMS.begin(1000);  // OR with a different frequency, say 1KHz 
 }
 
 void loop() {
   if (Serial.available() > 0) { // signal detected from serial port
     char incomingByte = Serial.read();
 
-    if (incomingByte == 'l') {
-      // Serial.println("forward signal received");
-      
-      backMotor->setSpeed(forSpeed);
-      backMotor->run(FORWARD);
-      
-      leftMotor->setSpeed(forSpeed);
-      leftMotor->run(FORWARD);
-      
-      rightMotor->setSpeed(forSpeed);
-      rightMotor->run(FORWARD);
+    if (incomingByte == 'l') { // turn counter-clockwise
+      turnCCW();
 
-    } else if (incomingByte == 'c') {
-      //Serial.println("close signal received");
-      backMotor->run(RELEASE);
-      leftMotor->run(RELEASE);
-      rightMotor->run(RELEASE);
-      //gripper->run(RELEASE);
+    } else if (incomingByte == 't') { // terminates
+      terminate();
 
-    } else if (incomingByte == 'r') {
-      //Serial.println("backward signal received");
-      backMotor->setSpeed(backSpeed);
-      backMotor->run(BACKWARD);
-      leftMotor->setSpeed(backSpeed);
-      leftMotor->run(BACKWARD);
-      rightMotor->setSpeed(backSpeed);
-      rightMotor->run(BACKWARD);
+    } else if (incomingByte == 'r') { // turn clockwise
+      turnCW();
       
-    } else if (incomingByte == 'w') {
-      leftMotor->setSpeed(backSpeed);
-      leftMotor->run(BACKWARD);
-      rightMotor->setSpeed(forSpeed);
-      rightMotor->run(FORWARD);
+    } else if (incomingByte == 'w') { // move forward
+      moveForward();
 
-    } else if (incomingByte == 's') {
-      rightMotor->setSpeed(backSpeed);
-      rightMotor->run(BACKWARD);
-      leftMotor->setSpeed(forSpeed);
-      leftMotor->run(FORWARD);
+    } else if (incomingByte == 's') { // move backward
+      moveBackward();
+
+    } else if (incomingByte == 'c') { // close gripper
+      closeGripper();
+
+    } else if (incomingByte == 'o') { // open gripper
+      openGripper();
 
     } else { // unrecognized signal from Serial port
       Serial.println("unknown signal received");
     }
   }
+}
+
+void turnCCW() {
+  backMotor->setSpeed(forSpeed);
+  backMotor->run(FORWARD);
+  
+  leftMotor->setSpeed(forSpeed);
+  leftMotor->run(FORWARD);
+  
+  rightMotor->setSpeed(forSpeed);
+  rightMotor->run(FORWARD);
+}
+
+void terminate() {
+  backMotor->run(RELEASE);
+  leftMotor->run(RELEASE);
+  rightMotor->run(RELEASE);
+  gripper->run(RELEASE);
+}
+
+void turnCW() {
+  backMotor->setSpeed(backSpeed);
+  backMotor->run(BACKWARD);
+  leftMotor->setSpeed(backSpeed);
+  leftMotor->run(BACKWARD);
+  rightMotor->setSpeed(backSpeed);
+  rightMotor->run(BACKWARD);
+}
+
+void moveForward() {
+  leftMotor->setSpeed(backSpeed);
+  leftMotor->run(BACKWARD);
+  rightMotor->setSpeed(forSpeed);
+  rightMotor->run(FORWARD);
+}
+
+void moveBackward() {
+  rightMotor->setSpeed(backSpeed);
+  rightMotor->run(BACKWARD);
+  leftMotor->setSpeed(forSpeed);
+  leftMotor->run(FORWARD);
+}
+
+void closeGripper() {
+  gripper->setSpeed(backSpeed);
+  gripper->run(BACKWARD);
+}
+
+void openGripper() {
+  gripper->setSpeed(forSpeed);
+  gripper->run(FORWARD);
 }
