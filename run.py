@@ -31,7 +31,7 @@ SKELETON_COLORS = [pygame.color.THECOLORS["red"],
                   pygame.color.THECOLORS["yellow"], 
                   pygame.color.THECOLORS["violet"]]
 
-uno = serial.Serial('COM10', 9600) # enter serial port number here
+uno = serial.Serial('COM12', 9600) # enter serial port number here
 
 class BodyGameRuntime(object):
     def __init__(self):
@@ -247,6 +247,16 @@ class BodyGameRuntime(object):
                             PyKinectV2.JointType_ElbowRight,
                             PyKinectV2.JointType_ShoulderRight)
 
+                        self.left_leg_angle = self.eval_gesture_angle(joints, 
+                            PyKinectV2.JointType_FootLeft, 
+                            PyKinectV2.JointType_KneeLeft,
+                            PyKinectV2.JointType_HipLeft)
+
+                        self.right_leg_angle = self.eval_gesture_angle(joints, 
+                            PyKinectV2.JointType_FootRight, 
+                            PyKinectV2.JointType_KneeRight,
+                            PyKinectV2.JointType_HipRight)
+
                         self.left_hand_pos = self.joint_x_y_pos(joints, 
                                                 PyKinectV2.JointType_HandLeft)
 
@@ -258,22 +268,30 @@ class BodyGameRuntime(object):
 
                         joint_depth_2 = joints[PyKinectV2.JointType_ShoulderLeft].Position.z
 
-                        if (joint_depth - joint_depth_2 > 0.2):
+                        if (joint_depth - joint_depth_2 > 0.2 and 
+                            self.right_arm_angle > 90):
                             # move backward
                             msg = 's'
                             uno.write(msg.encode())
-                            
-                        elif (joint_depth - joint_depth_2 < -0.45):
+
+                        elif (joint_depth - joint_depth_2 < -0.45 and    
+                              self.right_arm_angle > 90):
                             # move forward
                             msg = 'w'
                             uno.write(msg.encode())
 
-                        elif (self.left_arm_angle <= 90 and self.right_arm_angle > 90):
-                            msg = 'l'
+                        elif (self.left_arm_angle <= 90 and 
+                              self.right_arm_angle > 90 and 
+                              joints[PyKinectV2.JointType_HandLeft].Position.y >
+                        joints[PyKinectV2.JointType_ShoulderLeft].Position.y):
+                            msg = 'a'
                             uno.write(msg.encode())
                             
-                        elif (self.right_arm_angle <= 90 and self.left_arm_angle > 90):
-                            msg = 'r'
+                        elif (self.right_arm_angle <= 90 and 
+                              self.left_arm_angle > 90 and 
+                              joints[PyKinectV2.JointType_HandRight].Position.y >
+                        joints[PyKinectV2.JointType_ShoulderRight].Position.y):
+                            msg = 'd'
                             uno.write(msg.encode())
 
                         elif (self.is_hand_closed(self.left_hand_pos, self.right_hand_pos)
@@ -286,6 +304,14 @@ class BodyGameRuntime(object):
                               and joints[PyKinectV2.JointType_HandLeft].Position.x >=
                         joints[PyKinectV2.JointType_Head].Position.x):
                             msg = 'c'
+                            uno.write(msg.encode())
+
+                        elif (self.left_leg_angle <= 120):
+                            msg = 'l'
+                            uno.write(msg.encode())
+
+                        elif (self.right_leg_angle <= 120):
+                            msg = 'r'
                             uno.write(msg.encode())
 
                         else:

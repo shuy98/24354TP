@@ -14,8 +14,10 @@ Adafruit_DCMotor *rightMotor = AFMS.getMotor(1); // right
 Adafruit_DCMotor *gripper = AFMS.getMotor(2); // gripper
 
 /* global variables */
-int forSpeed = 255;
-int backSpeed = 255;
+int forSpeed = 92;
+int backSpeed = 92;
+int gripperSpeed = 192;
+int turnSpeed = 48;
 
 /* function prototypes */
 void turnCCW();
@@ -25,6 +27,8 @@ void moveForward();
 void moveBackward();
 void closeGripper();
 void openGripper();
+void moveRight();
+void moveLeft();
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -59,21 +63,27 @@ void loop() {
     } else if (incomingByte == 'o') { // open gripper
       openGripper();
 
+    } else if (incomingByte == 'd') { // move right
+      moveRight();
+
+    } else if (incomingByte == 'a') { // move left
+      moveLeft();
+
     } else { // unrecognized signal from Serial port
       Serial.println("unknown signal received");
     }
-  }
+  } 
 }
 
 void turnCCW() {
-  backMotor->setSpeed(forSpeed);
-  backMotor->run(FORWARD);
+  backMotor->setSpeed(turnSpeed);
+  backMotor->run(BACKWARD);
   
-  leftMotor->setSpeed(forSpeed);
-  leftMotor->run(FORWARD);
+  leftMotor->setSpeed(turnSpeed);
+  leftMotor->run(BACKWARD);
   
-  rightMotor->setSpeed(forSpeed);
-  rightMotor->run(FORWARD);
+  rightMotor->setSpeed(turnSpeed);
+  rightMotor->run(BACKWARD);
 }
 
 void terminate() {
@@ -84,34 +94,54 @@ void terminate() {
 }
 
 void turnCW() {
-  backMotor->setSpeed(backSpeed);
-  backMotor->run(BACKWARD);
-  leftMotor->setSpeed(backSpeed);
-  leftMotor->run(BACKWARD);
-  rightMotor->setSpeed(backSpeed);
-  rightMotor->run(BACKWARD);
+  backMotor->setSpeed(turnSpeed);
+  backMotor->run(FORWARD);
+  leftMotor->setSpeed(turnSpeed);
+  leftMotor->run(FORWARD);
+  rightMotor->setSpeed(turnSpeed);
+  rightMotor->run(FORWARD);
 }
 
 void moveForward() {
   leftMotor->setSpeed(backSpeed);
-  leftMotor->run(BACKWARD);
-  rightMotor->setSpeed(forSpeed);
-  rightMotor->run(FORWARD);
+  leftMotor->run(FORWARD);
+  rightMotor->setSpeed(forSpeed-5);
+  rightMotor->run(BACKWARD);
 }
 
 void moveBackward() {
   rightMotor->setSpeed(backSpeed);
-  rightMotor->run(BACKWARD);
+  rightMotor->run(FORWARD);
   leftMotor->setSpeed(forSpeed);
+  leftMotor->run(BACKWARD);
+}
+
+void moveRight() {
+  rightMotor->setSpeed(forSpeed/2);
+  rightMotor->run(FORWARD);
+  leftMotor->setSpeed(forSpeed/2);
   leftMotor->run(FORWARD);
+
+  backMotor->setSpeed(backSpeed-12);
+  backMotor->run(BACKWARD);  
+}
+
+void moveLeft() {
+  rightMotor->setSpeed(backSpeed/2);
+  rightMotor->run(BACKWARD);
+  leftMotor->setSpeed(backSpeed/2);
+  leftMotor->run(BACKWARD);
+
+  backMotor->setSpeed(forSpeed-8);
+  backMotor->run(FORWARD);  
 }
 
 void closeGripper() {
-  gripper->setSpeed(backSpeed);
+  gripper->setSpeed(gripperSpeed);
   gripper->run(BACKWARD);
 }
 
 void openGripper() {
-  gripper->setSpeed(forSpeed);
+  gripper->setSpeed(gripperSpeed);
   gripper->run(FORWARD);
 }
