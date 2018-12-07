@@ -105,7 +105,7 @@ void turnCW() {
 void moveForward() {
   leftMotor->setSpeed(backSpeed);
   leftMotor->run(FORWARD);
-  rightMotor->setSpeed(forSpeed-5);
+  rightMotor->setSpeed(forSpeed);
   rightMotor->run(BACKWARD);
 }
 
@@ -122,7 +122,7 @@ void moveRight() {
   leftMotor->setSpeed(forSpeed/2);
   leftMotor->run(FORWARD);
 
-  backMotor->setSpeed(backSpeed-12);
+  backMotor->setSpeed(forSpeed/2*(3**0.5));
   backMotor->run(BACKWARD);  
 }
 
@@ -132,7 +132,7 @@ void moveLeft() {
   leftMotor->setSpeed(backSpeed/2);
   leftMotor->run(BACKWARD);
 
-  backMotor->setSpeed(forSpeed-8);
+  backMotor->setSpeed(backSpeed/2*(3**0.5));
   backMotor->run(FORWARD);  
 }
 
