@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
+#include <math.h>
 
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
@@ -17,7 +18,7 @@ Adafruit_DCMotor *gripper = AFMS.getMotor(2); // gripper
 int forSpeed = 92;
 int backSpeed = 92;
 int gripperSpeed = 192;
-int turnSpeed = 48;
+int turnSpeed = 36;
 
 /* function prototypes */
 void turnCCW();
@@ -122,7 +123,7 @@ void moveRight() {
   leftMotor->setSpeed(forSpeed/2);
   leftMotor->run(FORWARD);
 
-  backMotor->setSpeed(forSpeed/2*(3**0.5));
+  backMotor->setSpeed(forSpeed/2*(pow(3, 0.5)));
   backMotor->run(BACKWARD);  
 }
 
@@ -132,7 +133,7 @@ void moveLeft() {
   leftMotor->setSpeed(backSpeed/2);
   leftMotor->run(BACKWARD);
 
-  backMotor->setSpeed(backSpeed/2*(3**0.5));
+  backMotor->setSpeed(backSpeed/2*(pow(3, 0.5)));
   backMotor->run(FORWARD);  
 }
 

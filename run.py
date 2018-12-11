@@ -232,7 +232,7 @@ class BodyGameRuntime(object):
             if self._bodies is not None: 
                 for i in range(0, self._kinect.max_body_count):
                     body = self._bodies.bodies[i]
-                    if not body.is_tracked: 
+                    if not body.is_tracked:  
                         continue 
                     if body.is_tracked:
                         joints = body.joints 
@@ -306,11 +306,11 @@ class BodyGameRuntime(object):
                             msg = 'c'
                             uno.write(msg.encode())
 
-                        elif (self.left_leg_angle <= 120):
+                        elif (self.left_leg_angle <= 135):
                             msg = 'l'
                             uno.write(msg.encode())
 
-                        elif (self.right_leg_angle <= 120):
+                        elif (self.right_leg_angle <= 135):
                             msg = 'r'
                             uno.write(msg.encode())
 
