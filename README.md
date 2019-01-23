@@ -77,7 +77,10 @@ Robot motion is based on different spinning speeds of three DC motors. For examp
 
   
 ## Video Demo on Wirelessly Control the Robot
-https://drive.google.com/file/d/1rcVZQeMSRfaizCOLsIZgg6IILubUMUVS/view?usp=sharing
+https://drive.google.com/file/d/1rcVZQeMSRfaizCOLsIZgg6IILubUMUVS/view?usp=sharing  
+
+Interesting short progress demo videos:  
+https://drive.google.com/drive/folders/1GpftXtcF17ZE3UGAxnW7FcvbJkevERj8?usp=sharing
 
 ## Additional Info
 Check project proposal and project progress reports for more details.  
