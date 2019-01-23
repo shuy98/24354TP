@@ -1,6 +1,6 @@
 # Semi-Autonomous Omnidirectional Manipulation Robot 
 Term project for course 24-354 Gadgetry: Sensors, Actuators, and Processors at Carnegine Mellon University.  
-This is a team project by Shu You, Nikhila Vembu, and Hardik Singh.
+This is a team project by Shu You, Nikhila Vembu, and Hardik Singh.  
 Any questions/comments or you want additional info please send me an email: shuy@andrew.cmu.edu 
 
 ## Description
