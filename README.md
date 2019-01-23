@@ -79,7 +79,7 @@ Robot motion is based on different spinning speeds of three DC motors. For examp
 https://drive.google.com/file/d/1rcVZQeMSRfaizCOLsIZgg6IILubUMUVS/view?usp=sharing
 
 ## Additional Info
-Check project proposal and project progress reports for more details
-Project Proposal: https://github.com/shuy98/24354TP/blob/master/Project%20Proposal.pdf
-Progress 1 report: https://github.com/shuy98/24354TP/blob/master/Progress%20Update%201-2.pdf
-Progress 2 report: https://github.com/shuy98/24354TP/blob/master/Progress%20Update%202.pdf
+Check project proposal and project progress reports for more details.  
+Project Proposal: https://github.com/shuy98/24354TP/blob/master/Project%20Proposal.pdf  
+Progress 1 report: https://github.com/shuy98/24354TP/blob/master/Progress%20Update%201-2.pdf  
+Progress 2 report: https://github.com/shuy98/24354TP/blob/master/Progress%20Update%202.pdf  
